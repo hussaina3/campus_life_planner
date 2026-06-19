@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A campus task and event planner for students. Track assignments, exams, meetings, and events with regex search and a live dashboard.">
+  <title>Campus Life Planner</title>
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="#" class="site-logo" data-section="dashboard" aria-label="Campus Life Planner — go to Dashboard">
+        <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+        </svg>
+        Campus Life Planner
+      </a>
+      <button
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="main-nav"
+        aria-label="Open navigation menu"
+        type="button"
+      >
+        <span class="hamburger-bar" aria-hidden="true"></span>
+        <span class="hamburger-bar" aria-hidden="true"></span>
+        <span class="hamburger-bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout-wrapper">
+
+    <!-- ===== NAV ===== -->
+    <nav id="main-nav" class="main-nav" role="navigation" aria-label="Main navigation">
+      <button class="nav-close" aria-label="Close navigation menu" type="button" hidden>
+        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </button>
+      <ul class="nav-list" role="list">
+        <li>
+          <a href="#" class="nav-link active" data-section="dashboard" aria-current="page">
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-section="records">
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>
+            </svg>
+            Records
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-section="add-edit" id="nav-add-task">
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Add Task
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-section="settings">
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+            </svg>
+            Settings
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-section="about">
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+            About
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ===== MAIN ===== -->
+    <main id="main-content" class="main-content" tabindex="-1">
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="page-section active" aria-labelledby="dashboard-heading">
+        <h1 id="dashboard-heading" class="section-title">Dashboard</h1>
+
+        <div class="stats-grid" role="region" aria-label="Summary statistics">
+          <article class="stat-card">
+            <span class="stat-value" id="stat-total">0</span>
+            <span class="stat-label">Total Tasks</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value" id="stat-today">0</span>
+            <span class="stat-label" id="stat-today-label">Today's Minutes</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value" id="stat-top-tag">—</span>
+            <span class="stat-label">Top Tag</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-value" id="stat-due-week">0</span>
+            <span class="stat-label">Due This Week</span>
+          </article>
+        </div>
+
+        <div class="cap-section" aria-label="Daily duration cap status">
+          <div class="cap-header">
+            <h2 class="cap-title">Today's Cap</h2>
+            <span id="cap-display" class="cap-fraction" aria-hidden="true">0 / — min</span>
+          </div>
+          <div
+            class="cap-bar-track"
+            role="progressbar"
+            aria-label="Daily cap usage"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            id="cap-progressbar"
+          >
+            <div class="cap-bar-fill" id="cap-bar-fill"></div>
+          </div>
+          <div role="status" aria-live="polite" aria-atomic="true" id="cap-status-msg" class="cap-msg"></div>
+          <div role="alert" aria-live="assertive" aria-atomic="true" id="cap-alert-msg" class="cap-msg cap-msg--over"></div>
+        </div>
+
+        <div class="chart-section" role="region" aria-label="Last 7 days activity">
+          <h2 class="chart-title">Last 7 Days</h2>
+          <div
+            class="bar-chart"
+            id="trend-chart"
+            role="img"
+            aria-label="Bar chart: minutes planned per day over the last 7 days"
+            aria-describedby="trend-chart-desc"
+          >
+            <!-- JS inserts bars here -->
+          </div>
+          <p class="chart-desc" id="trend-chart-desc" aria-live="polite"></p>
+        </div>
+
+        <div class="dashboard-actions">
+          <button class="btn btn--primary" data-section="add-edit" type="button">+ Add New Task</button>
+          <button class="btn btn--outline" data-section="records" type="button">View All Records</button>
+        </div>
+      </section>
+
+      <!-- RECORDS -->
+      <section id="records" class="page-section" aria-labelledby="records-heading">
+        <h1 id="records-heading" class="section-title">Records</h1>
+
+        <div class="records-toolbar">
+          <div class="search-group">
+            <label for="search-input" class="form-label">Search</label>
+            <div class="search-wrap">
+              <input
+                type="search"
+                id="search-input"
+                class="input"
+                placeholder="e.g. exam|study or @tag:Exam"
+                aria-describedby="search-hint search-error"
+                autocomplete="off"
+                spellcheck="false"
+              >
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-case-insensitive" checked>
+              Case insensitive
+            </label>
+            <p id="search-hint" class="field-hint">Regex supported. Use <code>@tag:Name</code> to filter by tag.</p>
+            <p id="search-error" class="field-error" role="alert" aria-live="assertive" hidden></p>
+          </div>
+          <div class="toolbar-btn-group">
+            <button class="btn btn--primary btn--sm" data-section="add-edit" type="button">+ Add Task</button>
+          </div>
+        </div>
+
+        <div class="sort-bar" role="group" aria-label="Sort records">
+          <span class="sort-label" id="sort-label">Sort by:</span>
+          <button class="sort-btn active" data-sort="dueDate" data-dir="asc" aria-pressed="true" aria-describedby="sort-label" type="button">
+            Due Date <span class="sort-arrow" aria-hidden="true">↑</span>
+          </button>
+          <button class="sort-btn" data-sort="title" data-dir="asc" aria-pressed="false" aria-describedby="sort-label" type="button">
+            Title <span class="sort-arrow" aria-hidden="true">↕</span>
+          </button>
+          <button class="sort-btn" data-sort="duration" data-dir="asc" aria-pressed="false" aria-describedby="sort-label" type="button">
+            Duration <span class="sort-arrow" aria-hidden="true">↕</span>
+          </button>
+        </div>
+
+        <p role="status" aria-live="polite" id="records-count" class="records-count"></p>
+
+        <div id="table-wrapper" class="table-wrapper">
+          <!-- Table or empty state inserted by JS -->
+        </div>
+      </section>
+
+      <!-- ADD / EDIT -->
+      <section id="add-edit" class="page-section" aria-labelledby="form-heading">
+        <h1 id="form-heading" class="section-title">Add Task</h1>
+
+        <form id="task-form" class="task-form" novalidate>
+          <p role="status" aria-live="polite" id="form-status" class="form-status" hidden></p>
+
+          <input type="hidden" id="edit-id">
+
+          <div class="form-group">
+            <label for="input-title" class="form-label">
+              Title <span class="required-mark" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="input-title"
+              name="title"
+              class="input"
+              required
+              maxlength="120"
+              aria-required="true"
+              aria-describedby="title-hint title-error"
+              autocomplete="off"
+            >
+            <p id="title-hint" class="field-hint">No leading or trailing spaces. Max 120 characters.</p>
+            <p id="title-error" class="field-error" role="alert" hidden></p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-due-date" class="form-label">
+                Due Date <span class="required-mark" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="date"
+                id="input-due-date"
+                name="dueDate"
+                class="input"
+                required
+                aria-required="true"
+                aria-describedby="due-date-error"
+              >
+              <p id="due-date-error" class="field-error" role="alert" hidden></p>
+            </div>
+
+            <div class="form-group">
+              <label for="input-duration" class="form-label">
+                Duration <span class="required-mark" aria-hidden="true">*</span>
+              </label>
+              <div class="input-affix-wrap">
+                <input
+                  type="text"
+                  id="input-duration"
+                  name="duration"
+                  class="input"
+                  required
+                  inputmode="decimal"
+                  placeholder="e.g. 90"
+                  aria-required="true"
+                  aria-describedby="duration-hint duration-error"
+                >
+                <span class="input-affix" aria-hidden="true">min</span>
+              </div>
+              <p id="duration-hint" class="field-hint">Enter minutes. 90 = 1.5 hours.</p>
+              <p id="duration-error" class="field-error" role="alert" hidden></p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input-tag" class="form-label">
+              Tag <span class="required-mark" aria-hidden="true">*</span>
+            </label>
+            <select
+              id="input-tag"
+              name="tag"
+              class="input select"
+              required
+              aria-required="true"
+              aria-describedby="tag-error"
+            >
+              <option value="">— Select a tag —</option>
+              <!-- Options populated by JS from settings.tags -->
+            </select>
+            <p id="tag-error" class="field-error" role="alert" hidden></p>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary" id="form-submit-btn">Add Task</button>
+            <button type="button" class="btn btn--ghost" id="form-cancel-btn" hidden>Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings" class="page-section" aria-labelledby="settings-heading">
+        <h1 id="settings-heading" class="section-title">Settings</h1>
+
+        <form id="settings-form" class="settings-form" novalidate>
+
+          <fieldset class="settings-group">
+            <legend class="settings-legend">Daily Duration Cap</legend>
+            <div class="form-group">
+              <label for="setting-daily-cap" class="form-label">Cap (minutes per day)</label>
+              <div class="input-affix-wrap">
+                <input
+                  type="number"
+                  id="setting-daily-cap"
+                  name="dailyCap"
+                  class="input"
+                  min="0"
+                  max="1440"
+                  step="1"
+                  value="240"
+                  aria-describedby="daily-cap-hint"
+                >
+                <span class="input-affix" aria-hidden="true">min</span>
+              </div>
+              <p id="daily-cap-hint" class="field-hint">Maximum minutes to plan per day. Set to 0 to disable.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="settings-group">
+            <legend class="settings-legend">Display Units</legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="displayUnit" value="minutes" checked>
+                Minutes
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="displayUnit" value="hours">
+                Hours
+              </label>
+            </div>
+            <p class="field-hint">Affects how duration is shown across the app. Input always uses minutes.</p>
+          </fieldset>
+
+          <fieldset class="settings-group">
+            <legend class="settings-legend">Tags</legend>
+            <div id="custom-tags-list" class="tag-chips" aria-label="Current tags" aria-live="polite"></div>
+            <div class="form-row form-row--tight">
+              <div class="form-group form-group--grow">
+                <label for="new-tag-input" class="form-label sr-only">New tag name</label>
+                <input
+                  type="text"
+                  id="new-tag-input"
+                  class="input"
+                  placeholder="New tag name"
+                  aria-describedby="new-tag-hint new-tag-error"
+                  maxlength="30"
+                >
+                <p id="new-tag-hint" class="field-hint sr-only">Letters, spaces, and hyphens only.</p>
+                <p id="new-tag-error" class="field-error" role="alert" hidden></p>
+              </div>
+              <button type="button" class="btn btn--outline btn--sm" id="add-tag-btn">Add Tag</button>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary" id="settings-save-btn">Save Settings</button>
+          </div>
+          <p role="status" aria-live="polite" id="settings-status" class="form-status" hidden></p>
+        </form>
+
+        <hr class="section-divider">
+
+        <section aria-labelledby="data-mgmt-heading">
+          <h2 id="data-mgmt-heading" class="settings-subheading">Data Management</h2>
+
+          <div class="data-actions">
+            <div class="data-action-group">
+              <h3 class="data-action-title">Import Records</h3>
+              <p class="data-action-desc">Load tasks from a JSON file. Must match the required schema.</p>
+              <label class="btn btn--outline" for="import-file-input">
+                Choose JSON File
+                <input
+                  type="file"
+                  id="import-file-input"
+                  accept=".json,application/json"
+                  class="sr-only"
+                >
+              </label>
+              <p role="alert" aria-live="assertive" id="import-status" class="import-status" hidden></p>
+            </div>
+
+            <div class="data-action-group">
+              <h3 class="data-action-title">Export Records</h3>
+              <p class="data-action-desc">Download all your tasks as a JSON file.</p>
+              <button type="button" class="btn btn--outline" id="export-btn">Export JSON</button>
+            </div>
+
+            <div class="data-action-group">
+              <h3 class="data-action-title">Reset Data</h3>
+              <p class="data-action-desc">Permanently delete all tasks. This cannot be undone.</p>
+              <button type="button" class="btn btn--danger" id="reset-btn">Reset All Data</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="page-section" aria-labelledby="about-heading">
+        <h1 id="about-heading" class="section-title">About</h1>
+
+        <div class="about-grid">
+          <div class="about-card">
+            <h2 class="about-subtitle">What is this?</h2>
+            <p>Campus Life Planner is a personal task and event tracker for students. Log study sessions, assignments, exams, and campus events — each with a duration, due date, and tag. It lives entirely in your browser and needs no account or server.</p>
+          </div>
+
+          <div class="about-card">
+            <h2 class="about-subtitle">Features</h2>
+            <ul class="feature-list">
+              <li>Add, edit, and delete tasks with duration tracking</li>
+              <li>Regex-powered live search with match highlighting</li>
+              <li>Sort by date, title, or duration</li>
+              <li>Dashboard with 7-day activity trend chart</li>
+              <li>Daily duration cap with live notifications</li>
+              <li>Minutes ↔ hours unit conversion</li>
+              <li>Import and export your data as JSON</li>
+              <li>Fully keyboard navigable and screen reader friendly</li>
+            </ul>
+          </div>
+
+          <div class="about-card">
+            <h2 class="about-subtitle">Built by</h2>
+            <address>
+              <p><strong>Hussaina Abubakar</strong></p>
+              <p><a href="mailto:a.hussaina@alustudent.com">a.hussaina@alustudent.com</a></p>
+              <p><a href="https://github.com/hussaina3" target="_blank" rel="noopener noreferrer">github.com/hussaina3</a></p>
+            </address>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer" role="contentinfo">
+    <p>Campus Life Planner &mdash; <a href="mailto:a.hussaina@alustudent.com">Hussaina Abubakar</a></p>
+  </footer>
+
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
