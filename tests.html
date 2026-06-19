@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validator Tests — Campus Life Planner</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #1E1B4B;
+      background: #F9F7FF;
+      padding: 2rem;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #6D28D9;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: #6B7280;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .all-pass { background: #F0FDF4; color: #16A34A; border: 1px solid #86EFAC; }
+    .has-fail  { background: #FEF2F2; color: #DC2626; border: 1px solid #FCA5A5; }
+
+    h2 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #4B5563;
+      margin: 1.5rem 0 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid #DDD6FE;
+    }
+
+    .test-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .test-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+    }
+    .test-row.pass { background: #F0FDF4; }
+    .test-row.fail { background: #FEF2F2; }
+
+    .badge {
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .pass .badge { color: #16A34A; }
+    .fail .badge { color: #DC2626; }
+
+    .desc { flex: 1; }
+
+    .err {
+      font-size: 0.8rem;
+      color: #DC2626;
+      font-style: italic;
+    }
+
+    .group-header {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #4B5563;
+      margin: 1.5rem 0 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid #DDD6FE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Validator Tests</h1>
+  <p class="subtitle">
+    Campus Life Planner — <code>scripts/validators.js</code><br>
+    Run this page over a local server (ES modules require HTTP).
+  </p>
+
+  <div id="summary"></div>
+  <div id="results"></div>
+
+  <script type="module">
+    import {
+      validate,
+      validateRecord,
+      hasDuplicateWords,
+      validateImport,
+      DUPLICATE_WORD_RE,
+      TAG_FILTER_RE
+    } from './scripts/validators.js';
+
+    // ---- Minimal test runner ----
+
+    const results = [];
+    let currentGroup = '';
+
+    function group(name) {
+      currentGroup = name;
+    }
+
+    function test(desc, fn) {
+      try {
+        fn();
+        results.push({ group: currentGroup, desc, passed: true });
+      } catch (e) {
+        results.push({ group: currentGroup, desc, passed: false, error: e.message });
+      }
+    }
+
+    function assert(condition, msg = 'Assertion failed') {
+      if (!condition) throw new Error(msg);
+    }
+
+    function eq(actual, expected, msg) {
+      if (actual !== expected) {
+        throw new Error(msg || `Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+      }
+    }
+
+    // ---- Title ----
+    group('Title — /^\\S(?:.*\\S)?$/');
+
+    test('accepts a normal title', () => eq(validate('title', 'Study for midterm'), null));
+    test('accepts a single word', () => eq(validate('title', 'Exam'), null));
+    test('accepts title with internal spaces', () => eq(validate('title', 'COMP101 final exam'), null));
+    test('rejects leading space', () => assert(validate('title', ' Study') !== null));
+    test('rejects trailing space', () => assert(validate('title', 'Study ') !== null));
+    test('rejects blank string', () => assert(validate('title', '') !== null));
+    test('rejects spaces only', () => assert(validate('title', '   ') !== null));
+
+    // ---- Duration ----
+    group('Duration — /^(0|[1-9]\\d*)(\\.[0-9]{1,2})?$/');
+
+    test('accepts a whole number', () => eq(validate('duration', '90'), null));
+    test('accepts one decimal place', () => eq(validate('duration', '1.5'), null));
+    test('accepts two decimal places', () => eq(validate('duration', '45.25'), null));
+    test('accepts zero', () => eq(validate('duration', '0'), null));
+    test('rejects leading dot (.5)', () => assert(validate('duration', '.5') !== null));
+    test('rejects negative number', () => assert(validate('duration', '-10') !== null));
+    test('rejects three decimal places', () => assert(validate('duration', '1.234') !== null));
+    test('rejects letters mixed in', () => assert(validate('duration', '90min') !== null));
+    test('rejects leading zero (09)', () => assert(validate('duration', '09') !== null));
+    test('rejects empty string', () => assert(validate('duration', '') !== null));
+
+    // ---- Date ----
+    group('Date — /^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$/');
+
+    test('accepts a valid date', () => eq(validate('date', '2025-10-15'), null));
+    test('accepts Jan 1st', () => eq(validate('date', '2025-01-01'), null));
+    test('accepts Dec 31st', () => eq(validate('date', '2025-12-31'), null));
+    test('rejects two-digit year', () => assert(validate('date', '25-10-15') !== null));
+    test('rejects month 00', () => assert(validate('date', '2025-00-15') !== null));
+    test('rejects month 13', () => assert(validate('date', '2025-13-01') !== null));
+    test('rejects day 00', () => assert(validate('date', '2025-01-00') !== null));
+    test('rejects day 32', () => assert(validate('date', '2025-01-32') !== null));
+    test('rejects slash format (2025/10/15)', () => assert(validate('date', '2025/10/15') !== null));
+    test('rejects reversed format (15-10-2025)', () => assert(validate('date', '15-10-2025') !== null));
+
+    // ---- Tag ----
+    group('Tag — /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/');
+
+    test('accepts a single word', () => eq(validate('tag', 'Study'), null));
+    test('accepts hyphenated words', () => eq(validate('tag', 'Self-Care'), null));
+    test('accepts two space-separated words', () => eq(validate('tag', 'Group Work'), null));
+    test('rejects digit in tag', () => assert(validate('tag', 'Study1') !== null));
+    test('rejects leading hyphen', () => assert(validate('tag', '-Study') !== null));
+    test('rejects trailing hyphen', () => assert(validate('tag', 'Study-') !== null));
+    test('rejects empty string', () => assert(validate('tag', '') !== null));
+    test('rejects special characters', () => assert(validate('tag', 'Study!') !== null));
+
+    // ---- Advanced: back-reference duplicate words ----
+    group('Advanced — back-reference: /\\b(\\w+)\\s+\\1\\b/i');
+
+    test('detects repeated consecutive word', () => assert(hasDuplicateWords('study study session')));
+    test('detects case-insensitive repeat', () => assert(hasDuplicateWords('the The exam')));
+    test('no false positive on normal text', () => assert(!hasDuplicateWords('Study for COMP101')));
+    test('no false positive on similar but distinct words', () => assert(!hasDuplicateWords('studying studied')));
+    test('detects repeat at start of string', () => assert(hasDuplicateWords('exam exam prep')));
+    test('no false positive on three distinct words', () => assert(!hasDuplicateWords('meet the team')));
+
+    // ---- Advanced: lookbehind tag filter ----
+    group('Advanced — lookbehind: /(?<=@tag:)(\\w+)/');
+
+    test('extracts tag from @tag:Study', () => {
+      const m = '@tag:Study'.match(TAG_FILTER_RE);
+      assert(m !== null, 'no match');
+      eq(m[0], 'Study');
+    });
+    test('extracts tag from @tag:Assignment', () => {
+      const m = '@tag:Assignment'.match(TAG_FILTER_RE);
+      assert(m !== null, 'no match');
+      eq(m[0], 'Assignment');
+    });
+    test('no match without @tag: prefix', () => {
+      assert('Study'.match(TAG_FILTER_RE) === null);
+    });
+    test('no match on partial prefix @ta:', () => {
+      assert('@ta:Study'.match(TAG_FILTER_RE) === null);
+    });
+
+    // ---- validateRecord ----
+    group('validateRecord — full object validation');
+
+    test('passes a complete valid record', () => {
+      const errs = validateRecord({ title: 'Study session', dueDate: '2025-10-01', duration: '90', tag: 'Study' });
+      eq(Object.keys(errs).length, 0);
+    });
+    test('catches missing title', () => {
+      const errs = validateRecord({ title: '', dueDate: '2025-10-01', duration: '90', tag: 'Study' });
+      assert('title' in errs);
+    });
+    test('catches invalid duration', () => {
+      const errs = validateRecord({ title: 'Test', dueDate: '2025-10-01', duration: '-5', tag: 'Study' });
+      assert('duration' in errs);
+    });
+    test('catches bad date format', () => {
+      const errs = validateRecord({ title: 'Test', dueDate: '01/10/2025', duration: '30', tag: 'Study' });
+      assert('date' in errs);
+    });
+
+    // ---- validateImport ----
+    group('validateImport — JSON import validation');
+
+    const goodRecord = {
+      id: 'rec_0001', title: 'Test task', dueDate: '2025-10-01',
+      duration: 60, tag: 'Study', createdAt: '2025-09-01T10:00:00Z', updatedAt: '2025-09-01T10:00:00Z'
+    };
+
+    test('accepts a valid array with one record', () => {
+      assert(validateImport([goodRecord]).valid);
+    });
+    test('rejects a plain object (not array)', () => {
+      assert(!validateImport({}).valid);
+    });
+    test('rejects an empty array', () => {
+      assert(!validateImport([]).valid);
+    });
+    test('rejects record missing required field (tag)', () => {
+      const bad = { ...goodRecord };
+      delete bad.tag;
+      assert(!validateImport([bad]).valid);
+    });
+    test('rejects record with invalid dueDate', () => {
+      assert(!validateImport([{ ...goodRecord, dueDate: '01-10-2025' }]).valid);
+    });
+    test('rejects record with invalid duration', () => {
+      assert(!validateImport([{ ...goodRecord, duration: -5 }]).valid);
+    });
+    test('accepts multiple valid records', () => {
+      const r2 = { ...goodRecord, id: 'rec_0002', title: 'Another task', dueDate: '2025-11-01' };
+      assert(validateImport([goodRecord, r2]).valid);
+    });
+
+    // ---- Render results ----
+
+    const passed = results.filter(r => r.passed).length;
+    const total = results.length;
+
+    document.getElementById('summary').innerHTML = `
+      <p class="summary ${passed === total ? 'all-pass' : 'has-fail'}">
+        ${passed} / ${total} tests passed
+      </p>
+    `;
+
+    // Group by section
+    const groups = [...new Set(results.map(r => r.group))];
+    const html = groups.map(g => {
+      const rows = results
+        .filter(r => r.group === g)
+        .map(r => `
+          <li class="test-row ${r.passed ? 'pass' : 'fail'}">
+            <span class="badge">${r.passed ? '✓' : '✗'}</span>
+            <span class="desc">${r.desc}</span>
+            ${r.error ? `<span class="err">${r.error}</span>` : ''}
+          </li>
+        `).join('');
+      return `
+        <div class="group-header">${g}</div>
+        <ul class="test-list">${rows}</ul>
+      `;
+    }).join('');
+
+    document.getElementById('results').innerHTML = html;
+  </script>
+</body>
+</html>
