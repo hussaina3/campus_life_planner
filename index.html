@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A campus task and event planner for students. Track assignments, exams, meetings, and events with regex search and a live dashboard.">
+  <meta name="theme-color" content="#6D28D9">
   <title>Campus Life Planner</title>
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/layout.css">
@@ -17,7 +18,7 @@
   <!-- ===== HEADER ===== -->
   <header class="site-header" role="banner">
     <div class="header-inner">
-      <a href="#" class="site-logo" data-section="dashboard" aria-label="Campus Life Planner — go to Dashboard">
+      <a href="#" class="site-logo" data-section="dashboard" aria-label="Campus Life Planner - go to Dashboard">
         <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
         </svg>
@@ -107,7 +108,7 @@
             <span class="stat-label" id="stat-today-label">Today's Minutes</span>
           </article>
           <article class="stat-card">
-            <span class="stat-value" id="stat-top-tag">—</span>
+            <span class="stat-value" id="stat-top-tag">-</span>
             <span class="stat-label">Top Tag</span>
           </article>
           <article class="stat-card">
@@ -119,7 +120,7 @@
         <div class="cap-section" aria-label="Daily duration cap status">
           <div class="cap-header">
             <h2 class="cap-title">Today's Cap</h2>
-            <span id="cap-display" class="cap-fraction" aria-hidden="true">0 / — min</span>
+            <span id="cap-display" class="cap-fraction" aria-hidden="true">0 / - min</span>
           </div>
           <div
             class="cap-bar-track"
@@ -286,7 +287,7 @@
               aria-required="true"
               aria-describedby="tag-error"
             >
-              <option value="">— Select a tag —</option>
+              <option value="">- Select a tag -</option>
               <!-- Options populated by JS from settings.tags -->
             </select>
             <p id="tag-error" class="field-error" role="alert" hidden></p>
@@ -412,7 +413,7 @@
         <div class="about-grid">
           <div class="about-card">
             <h2 class="about-subtitle">What is this?</h2>
-            <p>Campus Life Planner is a personal task and event tracker for students. Log study sessions, assignments, exams, and campus events — each with a duration, due date, and tag. It lives entirely in your browser and needs no account or server.</p>
+            <p>Campus Life Planner is a personal task and event tracker for students. Log study sessions, assignments, exams, and campus events - each with a duration, due date, and tag. It lives entirely in your browser and needs no account or server.</p>
           </div>
 
           <div class="about-card">
@@ -446,6 +447,10 @@
   <footer class="site-footer" role="contentinfo">
     <p>Campus Life Planner &mdash; <a href="mailto:a.hussaina@alustudent.com">Hussaina Abubakar</a></p>
   </footer>
+
+  <!-- Global ARIA live regions - used by announce() in ui.js for screen reader feedback -->
+  <div role="status" aria-live="polite" aria-atomic="true" id="global-status" class="sr-only"></div>
+  <div role="alert" aria-live="assertive" aria-atomic="true" id="global-alert" class="sr-only"></div>
 
   <script type="module" src="scripts/main.js"></script>
 </body>

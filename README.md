@@ -1,14 +1,14 @@
 # Campus Life Planner
 
-A browser-based task and event tracker for students. Track study sessions, assignments, exams, and campus events — with regex search, a live dashboard, and full import/export. No sign-up, no server, everything stays in your browser.
+A browser-based task and event tracker for students. Track study sessions, assignments, exams, and campus events - with regex search, a live dashboard, and full import/export. No sign-up, no server, everything stays in your browser.
 
-**Live demo**: [GitHub Pages URL — add after deployment]
+**Live demo**: https://hussaina3.github.io/campus-life-planner
 
 ---
 
 ## Chosen Theme
 
-**Campus Life Planner** — records include `title`, `dueDate`, `duration` (minutes), and `tag`.
+**Campus Life Planner** - records include `title`, `dueDate`, `duration` (minutes), and `tag`.
 
 ---
 
@@ -16,7 +16,7 @@ A browser-based task and event tracker for students. Track study sessions, assig
 
 ```json
 {
-  "id": "rec_0001_1695600000000",
+  "id": "rec_0001_1727222400000",
   "title": "Study for COMP101 midterm",
   "dueDate": "2025-10-15",
   "duration": 120,
@@ -27,57 +27,50 @@ A browser-based task and event tracker for students. Track study sessions, assig
 ```
 
 Fields:
-- `id` — unique string, format `rec_NNNN_timestamp`
-- `title` — string, no leading/trailing spaces
-- `dueDate` — string, format `YYYY-MM-DD`
-- `duration` — number, minutes (non-negative, up to 2 decimal places)
-- `tag` — string from the configured tag list
-- `createdAt` / `updatedAt` — ISO 8601 timestamps
+- `id` - unique string, format `rec_NNNN_timestamp`
+- `title` - string, no leading/trailing spaces, max 120 chars
+- `dueDate` - string, format `YYYY-MM-DD`
+- `duration` - number, minutes (non-negative, up to 2 decimal places)
+- `tag` - string from the configured tag list
+- `createdAt` / `updatedAt` - ISO 8601 timestamps, auto-set
 
 ---
 
 ## Features
 
-- Add, edit, and delete tasks with inline confirmation on delete
+- Add, edit, and delete tasks with inline confirm on delete
 - Regex-powered live search with case-insensitive toggle and `<mark>` highlighting
 - Sort records by due date, title (A–Z), or duration
 - Dashboard with total stats, 7-day trend bar chart, and top tag
 - Daily duration cap with ARIA live region alerts (polite when under, assertive when exceeded)
-- Duration display in minutes or hours (configurable in Settings)
-- Custom tag management in Settings
-- Import / export JSON with structure validation
-- Full keyboard navigation, skip link, visible focus, ARIA landmarks and live regions
+- Duration display in minutes or hours (toggle in Settings)
+- Custom tag management - add and remove tags in Settings
+- Import / export JSON with full structure validation
+- Full keyboard navigation, skip link, visible focus rings, ARIA landmarks and live regions
 
 ---
 
-## Wireframes
+## File Structure
 
-**Dashboard** — 4 stat cards (total tasks, today's minutes, top tag, due this week) + a 7-bar daily trend chart + cap progress bar. Two quick-action buttons (Add Task, View Records) at the bottom.
-
-**Records** — search input + case-insensitive toggle above a sortable table. On mobile the table collapses to stacked cards with labeled fields. Each row has Edit and Delete buttons.
-
-**Add/Edit Form** — four fields (title, due date, duration, tag select) with inline validation errors. Heading and submit label change between "Add Task" and "Edit Task" depending on mode.
-
-**Settings** — three fieldsets: daily cap (number input), display units (radio), custom tags (chips + add input). Below that, a data management panel with import/export/reset.
-
-**About** — app description, feature list, and contact info.
-
----
-
-## A11y Plan
-
-- Semantic landmarks: `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`
-- Heading hierarchy: one `<h1>` per section, `<h2>` / `<h3>` for subsections
-- Every `<input>` and `<select>` has an associated `<label>`
-- Skip-to-content link as the first focusable element in the page
-- Two ARIA live regions: `role="status"` (polite) for general feedback, `role="alert"` (assertive) for cap exceeded warnings
-- `aria-current="page"` on the active nav link, updated on each section switch
-- Focus moves to the section `<h1>` after navigation so screen readers announce the page change
-- Visible focus ring on all interactive elements (`:focus-visible` with 2px offset)
-- Color contrast: all text/background pairs target WCAG AA (≥ 4.5:1 for normal text)
-- `<mark>` elements for search highlights include sufficient contrast
-- The bar chart has `role="img"` with an `aria-label` and an adjacent live-updated text description
-- Mobile nav overlay traps focus when open
+```
+index.html          Single-page app shell
+tests.html          Inline validator unit tests (run via HTTP)
+seed.json           12 sample records for import
+README.md
+.gitignore
+styles/
+  base.css          CSS custom properties, reset, typography, utilities
+  layout.css        Header, nav, main layout - mobile-first, 3 breakpoints
+  components.css    Buttons, inputs, forms, table, stats, chart, badges
+  animations.css    Keyframes and transitions
+scripts/
+  storage.js        localStorage read/write (no logic)
+  state.js          In-memory state + CRUD mutations
+  validators.js     Regex rules, validateRecord, validateImport
+  search.js         Safe regex compiler + highlight helper
+  ui.js             All DOM rendering and event handling
+  main.js           App entry point - init state then init UI
+```
 
 ---
 
@@ -85,13 +78,13 @@ Fields:
 
 | Field / Feature | Pattern | Purpose | Example match |
 |---|---|---|---|
-| Title | `/^\S(?:.*\S)?$/` | No leading/trailing spaces | `"Study session"` ✓, `" Study"` ✗ |
-| Duration | `/^(0|[1-9]\d*)(\.\d{1,2})?$/` | Non-negative number, max 2 decimal places | `"90"` ✓, `"1.5"` ✓, `".5"` ✗ |
-| Due date | `/^\d{4}-(0[1-9]\|1[0-2])-(0[1-9]\|[12]\d\|3[01])$/` | YYYY-MM-DD format | `"2025-10-15"` ✓, `"25-10-15"` ✗ |
-| Tag | `/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/` | Letters, spaces, hyphens only | `"Study"` ✓, `"Self-Care"` ✓, `"study1"` ✗ |
-| Duplicate words *(advanced — back-reference)* | `/\b(\w+)\s+\1\b/i` | Catches accidental repeated words in title | `"study study"` ✓ (warns user) |
-| Tag filter *(advanced — lookbehind)* | `/(?<=@tag:)\w+/` | Extracts tag name from `@tag:Study` search syntax | `"@tag:Exam"` → extracts `"Exam"` |
-| Time token search | `/\b\d{2}:\d{2}\b/` | Finds HH:MM patterns in task titles | `"Meet at 09:00"` matches `"09:00"` |
+| Title | `/^\S(?:.*\S)?$/` | No leading/trailing spaces | `"Study session"` ✓ · `" Study"` ✗ |
+| Duration | `/^(0\|[1-9]\d*)(\.\d{1,2})?$/` | Non-negative, max 2 decimal places | `"90"` ✓ · `".5"` ✗ |
+| Due date | `/^\d{4}-(0[1-9]\|1[0-2])-(0[1-9]\|[12]\d\|3[01])$/` | YYYY-MM-DD only | `"2025-10-15"` ✓ · `"25-10-15"` ✗ |
+| Tag | `/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/` | Letters, spaces, hyphens | `"Self-Care"` ✓ · `"tag1"` ✗ |
+| Duplicate words *(back-reference)* | `/\b(\w+)\s+\1\b/i` | Warns on repeated consecutive words | `"study study"` → warning |
+| Tag filter *(lookbehind)* | `/(?<=@tag:)(\w+)/` | Extracts tag from `@tag:` search prefix | `"@tag:Exam"` → `"Exam"` |
+| Time token | `/\b\d{2}:\d{2}\b/` | Finds HH:MM patterns in titles | `"Meet at 09:00"` → match |
 
 ---
 
@@ -99,48 +92,74 @@ Fields:
 
 | Key | Action |
 |---|---|
-| `Tab` / `Shift+Tab` | Move focus between interactive elements |
-| `Enter` / `Space` | Activate buttons, links, checkboxes |
-| `Arrow keys` | Navigate sort buttons (grouped with `role="group"`) |
-| `Escape` | Close mobile nav, cancel edit mode |
-| Skip link (first `Tab`) | Jump to `#main-content` |
-| `Enter` on search input | Triggers live search (also fires on input event) |
+| `Tab` | Move forward through interactive elements |
+| `Shift+Tab` | Move backward |
+| `Enter` / `Space` | Activate buttons, links, checkboxes, radio buttons |
+| `Escape` | Close mobile nav (returns focus to hamburger button) |
+| Skip link (first `Tab` on load) | Jump directly to `#main-content` |
+| Arrow keys | Navigate within radio groups (display unit setting) |
+| `Enter` in new-tag input | Submit the new tag without clicking Add Tag |
+
+All section headings receive programmatic focus on navigation so screen readers announce the page change.
+
+---
+
+## Accessibility Notes
+
+- Semantic landmarks: `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>` with appropriate roles and labels
+- One `<h1>` per section, `<h2>`/`<h3>` for subsections - no skipped levels
+- Every `<input>` and `<select>` has an associated `<label>`; the file import uses `<label for="...">` to trigger the hidden input
+- Two ARIA live regions in the body: `role="status"` (polite) for general feedback, `role="alert"` (assertive) for cap exceeded
+- `aria-current="page"` on the active nav link, updated on every section switch
+- `aria-live="polite"` on cap status, `aria-live="assertive"` on cap exceeded alert
+- The 7-day bar chart carries `role="img"` + `aria-label` + a visible text description updated by JS
+- The records progress bar has `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`
+- Skip-to-content link is the first focusable element; visible on focus
+- Visible `:focus-visible` rings on all interactive elements (2px solid purple, 2px offset)
+- Color contrast: all text/background pairs target WCAG AA (≥ 4.5:1). `<mark>` uses amber background (#FDE68A) with dark text (#1E1B4B)
+- `prefers-reduced-motion` media query collapses all animations to 1ms
 
 ---
 
 ## How to Run Tests
 
-Open `tests.html` directly in a browser (must be served over HTTP for ES modules):
-
 ```bash
-# from the project root
+# from the project root - ES modules require HTTP, not file://
 npx serve .
-# then open http://localhost:3000/tests.html
+# open http://localhost:3000/tests.html
 ```
 
-All test results render on the page. Green = pass, red = fail.
+52 assertions across 7 groups. Results render on the page (green = pass, red = fail).
 
 ---
 
-## How to Run the App
+## How to Run the App Locally
 
 ```bash
 npx serve .
 # open http://localhost:3000
 ```
 
-Or just open `index.html` in a browser — but ES modules require a server; file:// won't work.
+No build step. No dependencies. Just a static file server.
 
 ---
 
 ## Seed Data
 
-`seed.json` contains 12 diverse records (varied tags, durations, dates including past and future). Use the Import button in Settings to load them.
+`seed.json` contains 12 diverse records across all 6 default tags, with a range of durations (30–240 min) and dates across a full semester. Load it via **Settings → Data Management → Import Records**.
+
+---
+
+## Demo Video
+
+[Unlisted YouTube link - add before submission]
+
+The video covers: keyboard-only navigation flow, regex search edge cases (including `@tag:` syntax and the duplicate-word warning), import/export round-trip, and the daily cap ARIA live region.
 
 ---
 
 ## Author
 
-**Hussaina Abubakar**
-[a.hussaina@alustudent.com](mailto:a.hussaina@alustudent.com)
+**Hussaina Abubakar**  
+[a.hussaina@alustudent.com](mailto:a.hussaina@alustudent.com)  
 [github.com/hussaina3](https://github.com/hussaina3)

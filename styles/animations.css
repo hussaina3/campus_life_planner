@@ -56,13 +56,16 @@
 .stat-card:nth-child(3) { animation-delay: 120ms; }
 .stat-card:nth-child(4) { animation-delay: 180ms; }
 
-/* Bar chart bars rise on render */
+/* Bar chart bars rise on render.
+   transform-origin must live on the element, not inside keyframes -
+   some browsers ignore it inside @keyframes. */
 @keyframes riseUp {
-  from { transform: scaleY(0); transform-origin: bottom; }
-  to   { transform: scaleY(1); transform-origin: bottom; }
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
 }
 
 .chart-bar {
+  transform-origin: bottom center;
   animation: riseUp 0.4s ease both;
 }
 

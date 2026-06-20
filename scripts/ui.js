@@ -1,4 +1,4 @@
-// ui.js — all DOM manipulation and event handling.
+// ui.js - all DOM manipulation and event handling.
 // Organised into clear sections: navigation, form, records (M4),
 // stats/dashboard (M5), and settings/data (M6).
 
@@ -29,7 +29,7 @@ export function init() {
 }
 
 // ============================================================
-// M4 — Navigation
+// M4 - Navigation
 // ============================================================
 
 function setupNavigation() {
@@ -75,7 +75,7 @@ function showSection(id) {
 }
 
 // ============================================================
-// M4 — Mobile nav
+// M4 - Mobile nav
 // ============================================================
 
 function setupMobileNav() {
@@ -122,7 +122,7 @@ function closeMobileNav() {
 }
 
 // ============================================================
-// M4 — Add / Edit form
+// M4 - Add / Edit form
 // ============================================================
 
 function setupForm() {
@@ -138,7 +138,7 @@ function setupForm() {
     document.getElementById(id)?.addEventListener('blur', e => validateFormField(e.target));
   });
 
-  // Duplicate-word warning on title (non-blocking — just advisory)
+  // Duplicate-word warning on title (non-blocking - just advisory)
   document.getElementById('input-title')?.addEventListener('blur', e => {
     if (e.target.value && hasDuplicateWords(e.target.value)) {
       const errEl = document.getElementById('title-error');
@@ -288,7 +288,7 @@ function clearAllFormErrors() {
 }
 
 // ============================================================
-// M4 — Records (render, sort, search, delete)
+// M4 - Records (render, sort, search, delete)
 // ============================================================
 
 function setupRecords() {
@@ -299,7 +299,7 @@ function setupRecords() {
     btn.addEventListener('click', () => handleSortClick(btn));
   });
 
-  // Event delegation — edit and delete buttons are added dynamically
+  // Event delegation - edit and delete buttons are added dynamically
   document.getElementById('table-wrapper')?.addEventListener('click', e => {
     const editBtn   = e.target.closest('[data-edit]');
     const deleteBtn = e.target.closest('[data-delete]');
@@ -321,7 +321,7 @@ function handleSearch() {
     return;
   }
 
-  // @tag: filter is handled separately — no regex compile needed
+  // @tag: filter is handled separately - no regex compile needed
   if (TAG_FILTER_RE.test(value)) {
     searchRegex = null;
     errorEl?.setAttribute('hidden', '');
@@ -395,7 +395,7 @@ export function renderRecords() {
   let   records     = state.getRecords();
   const total       = records.length;
 
-  // Apply filter — @tag: syntax takes priority over regex
+  // Apply filter - @tag: syntax takes priority over regex
   let filterTag = null;
   if (searchInput) {
     const tagMatch = searchInput.match(TAG_FILTER_RE);
@@ -444,7 +444,7 @@ export function renderRecords() {
   wrapper.innerHTML = `
     <table class="records-table">
       <caption class="sr-only">
-        Campus tasks — sorted by ${sortField} ${sortDir === 'asc' ? 'ascending' : 'descending'}
+        Campus tasks - sorted by ${sortField} ${sortDir === 'asc' ? 'ascending' : 'descending'}
       </caption>
       <thead>
         <tr>
@@ -479,7 +479,7 @@ function buildRow(record, re, settings, isNew) {
 }
 
 // ============================================================
-// M5 — Stats dashboard (renderAll, renderStats, cap, chart)
+// M5 - Stats dashboard (renderAll, renderStats, cap, chart)
 // ============================================================
 
 export function renderAll() {
@@ -502,7 +502,7 @@ export function renderStats() {
     acc[r.tag] = (acc[r.tag] || 0) + 1;
     return acc;
   }, {});
-  const topTag = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? '—';
+  const topTag = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? '-';
 
   const weekEnd = dateOffsetISO(6);
   const dueWeek = records.filter(r => r.dueDate >= todayStr && r.dueDate <= weekEnd).length;
@@ -599,7 +599,7 @@ function renderChart(records) {
 }
 
 // ============================================================
-// M6 — Settings, tags, import / export
+// M6 - Settings, tags, import / export
 // ============================================================
 
 function setupSettings() {
@@ -642,7 +642,7 @@ export function renderTagOptions() {
   const current = select.value;
   const tags    = state.getSettings().tags;
   select.innerHTML =
-    '<option value="">— Select a tag —</option>' +
+    '<option value="">- Select a tag -</option>' +
     tags.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
   if (current && tags.includes(current)) select.value = current;
 }

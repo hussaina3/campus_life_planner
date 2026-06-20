@@ -1,5 +1,5 @@
 /* ============================================================
-   Base — CSS custom properties, reset, typography, utilities
+   Base - CSS custom properties, reset, typography, utilities
    ============================================================ */
 
 :root {
@@ -33,7 +33,7 @@
   --color-success-bg:    #F0FDF4;
   --color-warning:       #D97706;
 
-  /* Search highlight — warm yellow, dark text for contrast */
+  /* Search highlight - warm yellow, dark text for contrast */
   --color-mark-bg:       #FDE68A;
   --color-mark-text:     #1E1B4B;
 

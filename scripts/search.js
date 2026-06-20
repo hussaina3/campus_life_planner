@@ -16,7 +16,7 @@ export function compileRegex(input, caseInsensitive = true) {
 /**
  * Highlights all matches of re in text using <mark> elements.
  * Matches against the original text, then HTML-escapes each segment
- * individually before assembling — so the regex works on raw text while
+ * individually before assembling - so the regex works on raw text while
  * the output is safe to set as innerHTML.
  */
 export function highlight(text, re) {

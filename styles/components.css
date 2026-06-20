@@ -1,5 +1,5 @@
 /* ============================================================
-   Components — buttons, inputs, forms, cards, table, stats,
+   Components - buttons, inputs, forms, cards, table, stats,
    chart, tags, badges, empty state
    ============================================================ */
 
@@ -536,6 +536,8 @@
 
 .col-title {
   max-width: 280px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .col-actions {
@@ -614,8 +616,10 @@
     padding-top: var(--space-2);
   }
 
-  .col-actions::before {
-    display: none; /* no label for actions column */
+  /* Needs higher specificity than .records-table td::before (0,1,1) to suppress
+     the empty label on the actions cell. Using td[data-label=""] gives (0,2,1). */
+  .records-table td[data-label=""]::before {
+    display: none;
   }
 }
 

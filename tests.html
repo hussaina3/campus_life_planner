@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Validator Tests — Campus Life Planner</title>
+  <title>Validator Tests - Campus Life Planner</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -102,7 +102,7 @@
 <body>
   <h1>Validator Tests</h1>
   <p class="subtitle">
-    Campus Life Planner — <code>scripts/validators.js</code><br>
+    Campus Life Planner - <code>scripts/validators.js</code><br>
     Run this page over a local server (ES modules require HTTP).
   </p>
 
@@ -148,7 +148,7 @@
     }
 
     // ---- Title ----
-    group('Title — /^\\S(?:.*\\S)?$/');
+    group('Title - /^\\S(?:.*\\S)?$/');
 
     test('accepts a normal title', () => eq(validate('title', 'Study for midterm'), null));
     test('accepts a single word', () => eq(validate('title', 'Exam'), null));
@@ -159,7 +159,7 @@
     test('rejects spaces only', () => assert(validate('title', '   ') !== null));
 
     // ---- Duration ----
-    group('Duration — /^(0|[1-9]\\d*)(\\.[0-9]{1,2})?$/');
+    group('Duration - /^(0|[1-9]\\d*)(\\.[0-9]{1,2})?$/');
 
     test('accepts a whole number', () => eq(validate('duration', '90'), null));
     test('accepts one decimal place', () => eq(validate('duration', '1.5'), null));
@@ -173,7 +173,7 @@
     test('rejects empty string', () => assert(validate('duration', '') !== null));
 
     // ---- Date ----
-    group('Date — /^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$/');
+    group('Date - /^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$/');
 
     test('accepts a valid date', () => eq(validate('date', '2025-10-15'), null));
     test('accepts Jan 1st', () => eq(validate('date', '2025-01-01'), null));
@@ -187,7 +187,7 @@
     test('rejects reversed format (15-10-2025)', () => assert(validate('date', '15-10-2025') !== null));
 
     // ---- Tag ----
-    group('Tag — /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/');
+    group('Tag - /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/');
 
     test('accepts a single word', () => eq(validate('tag', 'Study'), null));
     test('accepts hyphenated words', () => eq(validate('tag', 'Self-Care'), null));
@@ -199,7 +199,7 @@
     test('rejects special characters', () => assert(validate('tag', 'Study!') !== null));
 
     // ---- Advanced: back-reference duplicate words ----
-    group('Advanced — back-reference: /\\b(\\w+)\\s+\\1\\b/i');
+    group('Advanced - back-reference: /\\b(\\w+)\\s+\\1\\b/i');
 
     test('detects repeated consecutive word', () => assert(hasDuplicateWords('study study session')));
     test('detects case-insensitive repeat', () => assert(hasDuplicateWords('the The exam')));
@@ -209,7 +209,7 @@
     test('no false positive on three distinct words', () => assert(!hasDuplicateWords('meet the team')));
 
     // ---- Advanced: lookbehind tag filter ----
-    group('Advanced — lookbehind: /(?<=@tag:)(\\w+)/');
+    group('Advanced - lookbehind: /(?<=@tag:)(\\w+)/');
 
     test('extracts tag from @tag:Study', () => {
       const m = '@tag:Study'.match(TAG_FILTER_RE);
@@ -229,7 +229,7 @@
     });
 
     // ---- validateRecord ----
-    group('validateRecord — full object validation');
+    group('validateRecord - full object validation');
 
     test('passes a complete valid record', () => {
       const errs = validateRecord({ title: 'Study session', dueDate: '2025-10-01', duration: '90', tag: 'Study' });
@@ -249,7 +249,7 @@
     });
 
     // ---- validateImport ----
-    group('validateImport — JSON import validation');
+    group('validateImport - JSON import validation');
 
     const goodRecord = {
       id: 'rec_0001', title: 'Test task', dueDate: '2025-10-01',

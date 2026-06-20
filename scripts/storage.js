@@ -1,4 +1,4 @@
-// Thin localStorage wrapper. Nothing here makes decisions about data —
+// Thin localStorage wrapper. Nothing here makes decisions about data -
 // it just reads and writes. Error handling on load is important because
 // localStorage can be corrupted or blocked in certain browser contexts.
 

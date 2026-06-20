@@ -1,5 +1,5 @@
 /* ============================================================
-   Layout — header, nav, main wrapper, section display
+   Layout - header, nav, main wrapper, section display
    Mobile-first: base styles target ~360px, scaled up
    ============================================================ */
 
@@ -90,7 +90,7 @@
   min-height: calc(100vh - var(--header-height));
 }
 
-/* ---- Nav — mobile: full-screen overlay ---- */
+/* ---- Nav - mobile: full-screen overlay ---- */
 
 .main-nav {
   display: none;
@@ -189,7 +189,7 @@
 }
 
 /* ============================================================
-   Tablet — 768px+
+   Tablet - 768px+
    Nav becomes a horizontal bar below the header
    ============================================================ */
 
@@ -246,7 +246,7 @@
 }
 
 /* ============================================================
-   Desktop — 1024px+
+   Desktop - 1024px+
    Nav becomes a fixed left sidebar
    ============================================================ */
 

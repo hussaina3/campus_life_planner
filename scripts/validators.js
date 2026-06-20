@@ -23,11 +23,11 @@ export const RULES = {
   }
 };
 
-// Advanced: back-reference — catches duplicate consecutive words in a title.
+// Advanced: back-reference - catches duplicate consecutive words in a title.
 // e.g. "study study session" or "the The exam" both match.
 export const DUPLICATE_WORD_RE = /\b(\w+)\s+\1\b/i;
 
-// Advanced: lookbehind — extracts the tag name from @tag: filter syntax.
+// Advanced: lookbehind - extracts the tag name from @tag: filter syntax.
 // e.g. "@tag:Study" → extracts "Study"
 export const TAG_FILTER_RE = /(?<=@tag:)(\w+)/;
 
@@ -68,7 +68,7 @@ export function validateRecord(data) {
 
 /**
  * Returns true if the title has a duplicate consecutive word.
- * This is a warning, not a hard block — the caller decides how to surface it.
+ * This is a warning, not a hard block - the caller decides how to surface it.
  */
 export function hasDuplicateWords(title) {
   return DUPLICATE_WORD_RE.test(title);
@@ -83,7 +83,7 @@ export function validateImport(data) {
     return { valid: false, error: 'Import file must contain a JSON array at the top level.' };
   }
   if (data.length === 0) {
-    return { valid: false, error: 'Import file is empty — nothing to load.' };
+    return { valid: false, error: 'Import file is empty - nothing to load.' };
   }
 
   const required = ['id', 'title', 'dueDate', 'duration', 'tag', 'createdAt', 'updatedAt'];
@@ -100,13 +100,13 @@ export function validateImport(data) {
     }
 
     const titleErr = validate('title', String(rec.title));
-    if (titleErr) return { valid: false, error: `Record ${i} — title: ${titleErr}` };
+    if (titleErr) return { valid: false, error: `Record ${i} - title: ${titleErr}` };
 
     const durationErr = validate('duration', String(rec.duration));
-    if (durationErr) return { valid: false, error: `Record ${i} — duration: ${durationErr}` };
+    if (durationErr) return { valid: false, error: `Record ${i} - duration: ${durationErr}` };
 
     const dateErr = validate('date', String(rec.dueDate));
-    if (dateErr) return { valid: false, error: `Record ${i} — dueDate: ${dateErr}` };
+    if (dateErr) return { valid: false, error: `Record ${i} - dueDate: ${dateErr}` };
   }
 
   return { valid: true };
