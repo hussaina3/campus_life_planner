@@ -2,7 +2,7 @@
 
 A browser-based task and event tracker for students. Track study sessions, assignments, exams, and campus events - with regex search, a live dashboard, and full import/export. No sign-up, no server, everything stays in your browser.
 
-**Live demo**: https://hussaina3.github.io/campus-life-planner
+**Live demo**: https://hussaina3.github.io/campus_life_planner/
 
 ---
 
