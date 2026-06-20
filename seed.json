@@ -1,0 +1,110 @@
+[
+  {
+    "id": "rec_0001_1727222400000",
+    "title": "COMP101 midterm study session",
+    "dueDate": "2025-10-15",
+    "duration": 120,
+    "tag": "Study",
+    "createdAt": "2025-09-25T10:00:00.000Z",
+    "updatedAt": "2025-09-25T10:00:00.000Z"
+  },
+  {
+    "id": "rec_0002_1727136000000",
+    "title": "Submit MATH201 assignment",
+    "dueDate": "2025-09-27",
+    "duration": 90,
+    "tag": "Assignment",
+    "createdAt": "2025-09-24T14:30:00.000Z",
+    "updatedAt": "2025-09-24T14:30:00.000Z"
+  },
+  {
+    "id": "rec_0003_1727049600000",
+    "title": "Tech Society club meeting",
+    "dueDate": "2025-09-30",
+    "duration": 60,
+    "tag": "Meeting",
+    "createdAt": "2025-09-23T09:00:00.000Z",
+    "updatedAt": "2025-09-23T09:00:00.000Z"
+  },
+  {
+    "id": "rec_0004_1726963200000",
+    "title": "PHYS101 final exam prep",
+    "dueDate": "2025-12-05",
+    "duration": 180,
+    "tag": "Exam",
+    "createdAt": "2025-09-22T11:00:00.000Z",
+    "updatedAt": "2025-09-22T11:00:00.000Z"
+  },
+  {
+    "id": "rec_0005_1725148800000",
+    "title": "Freshers Week orientation event",
+    "dueDate": "2025-09-01",
+    "duration": 240,
+    "tag": "Event",
+    "createdAt": "2025-08-28T08:00:00.000Z",
+    "updatedAt": "2025-08-28T08:00:00.000Z"
+  },
+  {
+    "id": "rec_0006_1727395200000",
+    "title": "Library research session",
+    "dueDate": "2025-10-02",
+    "duration": 45,
+    "tag": "Study",
+    "createdAt": "2025-09-29T13:00:00.000Z",
+    "updatedAt": "2025-09-29T13:00:00.000Z"
+  },
+  {
+    "id": "rec_0007_1727308800000",
+    "title": "Group project presentation prep",
+    "dueDate": "2025-10-20",
+    "duration": 30,
+    "tag": "Assignment",
+    "createdAt": "2025-09-28T16:00:00.000Z",
+    "updatedAt": "2025-09-28T16:00:00.000Z"
+  },
+  {
+    "id": "rec_0008_1727222400001",
+    "title": "Student health clinic appointment",
+    "dueDate": "2025-10-05",
+    "duration": 60,
+    "tag": "Other",
+    "createdAt": "2025-09-27T10:30:00.000Z",
+    "updatedAt": "2025-09-27T10:30:00.000Z"
+  },
+  {
+    "id": "rec_0009_1727049600001",
+    "title": "ENG102 essay first draft",
+    "dueDate": "2025-10-10",
+    "duration": 150,
+    "tag": "Assignment",
+    "createdAt": "2025-09-26T20:00:00.000Z",
+    "updatedAt": "2025-09-26T20:00:00.000Z"
+  },
+  {
+    "id": "rec_0010_1726531200000",
+    "title": "Engineering and Technology career fair",
+    "dueDate": "2025-11-15",
+    "duration": 120,
+    "tag": "Event",
+    "createdAt": "2025-09-20T09:00:00.000Z",
+    "updatedAt": "2025-09-20T09:00:00.000Z"
+  },
+  {
+    "id": "rec_0011_1726444800000",
+    "title": "CHEM101 study group session",
+    "dueDate": "2025-10-08",
+    "duration": 90,
+    "tag": "Study",
+    "createdAt": "2025-09-19T14:00:00.000Z",
+    "updatedAt": "2025-09-19T14:00:00.000Z"
+  },
+  {
+    "id": "rec_0012_1726358400000",
+    "title": "Academic advisor check-in meeting",
+    "dueDate": "2025-09-28",
+    "duration": 30,
+    "tag": "Meeting",
+    "createdAt": "2025-09-18T10:00:00.000Z",
+    "updatedAt": "2025-09-18T10:00:00.000Z"
+  }
+]
